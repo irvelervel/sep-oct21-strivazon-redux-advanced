@@ -6,6 +6,7 @@ export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
 export const SET_USERNAME = 'SET_USERNAME'
 export const ADD_TO_CART_ERROR = 'ADD_TO_CART_ERROR'
 export const GET_BOOKS = 'GET_BOOKS'
+export const GET_BOOKS_ERROR = 'GET_BOOKS_ERROR'
 
 export const addToCartAction = (book) => ({
   type: ADD_TO_CART,
@@ -36,6 +37,7 @@ export const addToCartActionWithThunk = (book) => {
     console.log("here's my state currently", getState())
     // for example, we could even do an async fetch here...
     if (getState().cart.products.length < 5) {
+      // if the cart is not full yet
       setTimeout(() => {
         dispatch({
           type: ADD_TO_CART,
@@ -43,6 +45,7 @@ export const addToCartActionWithThunk = (book) => {
         })
       }, 500)
     } else {
+      // this means the cart is full
       dispatch({
         type: ADD_TO_CART_ERROR,
       })
@@ -56,12 +59,18 @@ export const getBooksAction = () => {
     try {
       let resp = await fetch('https://striveschool-api.herokuapp.com/food-books')
       if (resp.ok) {
+        console.log(resp)
         let books = await resp.json()
         dispatch({
           type: GET_BOOKS,
           payload: books,
         })
       } else {
+        // we got an error! probably 404, 500, 401, etc.
+        dispatch({
+          type: GET_BOOKS_ERROR,
+          payload: resp.status,
+        })
         console.log('error')
       }
     } catch (error) {

@@ -24,6 +24,7 @@ export const initialState = {
   },
   book: {
     stock: [],
+    errorCode: null,
   },
 }
 

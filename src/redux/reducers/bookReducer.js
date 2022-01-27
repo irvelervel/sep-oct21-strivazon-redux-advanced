@@ -1,4 +1,4 @@
-import { GET_BOOKS } from '../actions'
+import { GET_BOOKS, GET_BOOKS_ERROR } from '../actions'
 import { initialState } from '../store'
 
 const bookReducer = (state = initialState.book, action) => {
@@ -8,6 +8,12 @@ const bookReducer = (state = initialState.book, action) => {
         ...state,
         stock: action.payload,
         // from being an empty array, now stock gets filled up!
+      }
+
+    case GET_BOOKS_ERROR:
+      return {
+        ...state,
+        errorCode: action.payload,
       }
 
     default:

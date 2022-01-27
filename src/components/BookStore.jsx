@@ -7,7 +7,8 @@ import { getBooksAction } from "../redux/actions";
 
 const mapStateToProps = state => ({
   // the array of books available for purchase
-  booksInStock: state.book.stock
+  booksInStock: state.book.stock,
+  errorCode: state.book.errorCode
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -41,6 +42,7 @@ class BookStore extends Component {
             bookSelected={this.state.bookSelected}
             changeBook={this.changeBook}
             books={this.props.booksInStock}
+            errorCode={this.props.errorCode}
           />
         </Col>
         <Col md={8}>

@@ -44,6 +44,7 @@ const cartReducer = (state = initialState.cart, action) => {
         products: state.products.filter((book, i) => i !== action.payload),
         // products: [...state.cart.products.slice(0, action.payload), ...state.cart.products.slice(action.payload + 1)], // <-- THIS ALSO WORKS :)
         // obv methods that mutate the original array (like .splice()) must not be used :(
+        isError: false,
       }
 
     default:
