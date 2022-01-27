@@ -2,27 +2,33 @@ import { Component } from "react";
 import BookList from "./BookList";
 import BookDetail from "./BookDetail";
 import { Col, Row } from "react-bootstrap";
+import { connect } from 'react-redux'
+import { getBooksAction } from "../redux/actions";
+
+const mapStateToProps = state => ({
+  // the array of books available for purchase
+  booksInStock: state.book.stock
+})
+
+const mapDispatchToProps = dispatch => ({
+  getBooks: () => {
+    dispatch(getBooksAction())
+  }
+})
 
 class BookStore extends Component {
   state = {
-    books: [],
+    // previously we were storing the array of fetched books in a local state
+    // now we're doing it into the redux store!
+    // books = []
     bookSelected: null,
   };
 
   componentDidMount = async () => {
-    try {
-      let resp = await fetch(
-        "https://striveschool-api.herokuapp.com/food-books"
-      );
-      if (resp.ok) {
-        let books = await resp.json();
-        this.setState({ books });
-      } else {
-        console.log("error");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // from here I will just have to dispatch getBooksAction,
+    // so the network call will happen and the books for the stock array
+    // are going to be retrieved
+    this.props.getBooks()
   };
 
   changeBook = (book) => this.setState({ bookSelected: book });
@@ -34,7 +40,7 @@ class BookStore extends Component {
           <BookList
             bookSelected={this.state.bookSelected}
             changeBook={this.changeBook}
-            books={this.state.books}
+            books={this.props.booksInStock}
           />
         </Col>
         <Col md={8}>
@@ -47,4 +53,5 @@ class BookStore extends Component {
   }
 }
 
-export default BookStore;
+export default connect(mapStateToProps, mapDispatchToProps)(BookStore);
+// we'll need both functionalities: read & write

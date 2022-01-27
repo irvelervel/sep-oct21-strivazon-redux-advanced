@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions'
+import { ADD_TO_CART, REMOVE_FROM_CART, ADD_TO_CART_ERROR } from '../actions'
 import { initialState } from '../store'
 
 // splitting the reducer into multiple ones is a common practise!
@@ -30,6 +30,12 @@ const cartReducer = (state = initialState.cart, action) => {
         //   products: state.cart.products.concat(action.payload), // <-- THIS IS ALLOWED! :)
         products: [...state.products, action.payload], // THIS IS ALLOWED :)
         //   products: [],
+      }
+
+    case ADD_TO_CART_ERROR:
+      return {
+        ...state,
+        isError: true,
       }
 
     case REMOVE_FROM_CART:

@@ -4,6 +4,8 @@
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
 export const SET_USERNAME = 'SET_USERNAME'
+export const ADD_TO_CART_ERROR = 'ADD_TO_CART_ERROR'
+export const GET_BOOKS = 'GET_BOOKS'
 
 export const addToCartAction = (book) => ({
   type: ADD_TO_CART,
@@ -33,11 +35,37 @@ export const addToCartActionWithThunk = (book) => {
     console.log('this book has been added with redux-thunk')
     console.log("here's my state currently", getState())
     // for example, we could even do an async fetch here...
-    setTimeout(() => {
+    if (getState().cart.products.length < 5) {
+      setTimeout(() => {
+        dispatch({
+          type: ADD_TO_CART,
+          payload: book,
+        })
+      }, 500)
+    } else {
       dispatch({
-        type: ADD_TO_CART,
-        payload: book,
+        type: ADD_TO_CART_ERROR,
       })
-    }, 1000)
+    }
+  }
+}
+
+export const getBooksAction = () => {
+  // thanks to redux-thunk we can inject logic into our action creators
+  return async (dispatch) => {
+    try {
+      let resp = await fetch('https://striveschool-api.herokuapp.com/food-books')
+      if (resp.ok) {
+        let books = await resp.json()
+        dispatch({
+          type: GET_BOOKS,
+          payload: books,
+        })
+      } else {
+        console.log('error')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

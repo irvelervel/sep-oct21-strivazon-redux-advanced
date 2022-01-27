@@ -3,6 +3,7 @@ import cartReducer from '../reducers/cartReducer'
 import userReducer from '../reducers/userReducer'
 
 import thunk from 'redux-thunk' // <-- this must be used with applyMiddleware
+import bookReducer from '../reducers/bookReducer'
 
 // this is the compose function the devTools team came up with
 // window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -16,16 +17,20 @@ export const initialState = {
   cart: {
     // ...
     products: [],
+    isError: false,
   },
   user: {
     username: '',
-    isError: false,
+  },
+  book: {
+    stock: [],
   },
 }
 
 const bigReducer = combineReducers({
   cart: cartReducer, // <-- I chose 'cart' as the key because 'cart' is one of the sub-objects of my state!
   user: userReducer,
+  book: bookReducer,
 })
 
 let configureStore = createStore(

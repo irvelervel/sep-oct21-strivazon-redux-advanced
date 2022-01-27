@@ -6,7 +6,8 @@ import { removeFromCartAction } from "../redux/actions";
 
 // for providing read access (for the products array) let's create mapStateToProps
 const mapStateToProps = (state) => ({
-  products: state.cart.products
+  products: state.cart.products,
+  booksInStock: state.book.stock.length
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -16,9 +17,10 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-const Cart = ({ products, removeFromCart }) => (
+const Cart = ({ products, removeFromCart, booksInStock }) => (
   <Row>
     <Col sm={12}>
+      <div>The main page has {booksInStock} products available</div>
       <ul style={{ listStyle: "none" }}>
         {products.map((book, i) => (
           <li key={i} className="my-4">

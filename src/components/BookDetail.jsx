@@ -1,11 +1,13 @@
 import { Component } from "react";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Button";
 import { connect } from 'react-redux'
 import { addToCartAction, addToCartActionWithThunk } from "../redux/actions";
 
 const mapStateToProps = state => ({
-  username: state.user.username
+  username: state.user.username,
+  isCartFull: state.cart.isError
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -32,6 +34,13 @@ class BookDetail extends Component {
   render() {
     return (
       <div className="mt-3">
+        {
+          this.props.isCartFull && (
+            <Alert variant="danger">
+              Your cart has reached maximum length :(
+            </Alert>
+          )
+        }
         {this.state.book ? (
           <>
             <Row>
